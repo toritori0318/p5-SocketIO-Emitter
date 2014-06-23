@@ -32,6 +32,16 @@ A Perl implementation of socket.io-emitter.
 
 This project uses redis. Make sure your environment has redis.
 
+## Installation
+
+    git clone https://github.com/toritori0318/p5-SocketIO-Emitter.git
+    cd p5-SocketIO-Emitter
+
+    perl Makefile.PL
+    make
+    make test
+    make install
+
 # LICENSE
 
 Copyright (C) toritori0318.
