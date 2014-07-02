@@ -54,6 +54,19 @@ sub of {
 sub emit {
     my ($self, @args) = @_;
 
+    my $pack_data = $self->pack(@args);
+    my $packed = $self->messagepack->pack($pack_data);
+    $self->redis->publish($self->key, $packed);
+
+    # clear
+    $self->clear;
+
+    $self;
+}
+
+sub pack {
+    my ($self, @args) = @_;
+
     my %packet;
     $packet{type} = ($self->include_binary(@args)) ? $BINARY_EVENT : $EVENT;
     $packet{data} = \@args;
@@ -64,20 +77,20 @@ sub emit {
       delete $self->flags->{'nsp'};
     }
 
-    my $packed = $self->messagepack->pack([\%packet, { rooms => $self->rooms, flags => $self->flags }]);
-    $self->redis->publish($self->key, $packed);
+    return [\%packet, { rooms => $self->rooms, flags => $self->flags }];
+}
 
-    # clear
+sub clear {
+    my ($self) = @_;
+
     $self->rooms([]);
     $self->flags({});
-
-    $self;
 }
 
 sub include_binary {
     my ($self, @args) = @_;
     for(@args) {
-        return 1 if /[[:^ascii:]]/;
+        return 1 if $_ && /[[:^ascii:]]/;
     }
     return;
 }
