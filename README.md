@@ -1,6 +1,6 @@
 # NAME
 
-[WIP] SocketIO::Emitter - A Perl implementation of socket.io-emitter.
+SocketIO::Emitter - A Perl implementation of socket.io-emitter.
 
 # SYNOPSIS
 
@@ -22,7 +22,7 @@
     $em->of('/nsp')->emit('event', 'nsp broadcast blah blah blah');
 
     # namespace room broadcast
-    $em->of('/nsp')->room('roomId')->broadcast->emit('event', 'yahooooooo!!!!');
+    $em->of('/nsp')->to('roomId')->broadcast->emit('event', 'yahooooooo!!!!');
 
 ```
 
