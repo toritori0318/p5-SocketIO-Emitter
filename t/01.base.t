@@ -2,8 +2,6 @@ use strict;
 use warnings;
 use SocketIO::Emitter;
 use Test::More;
-use Sub::Spy qw/spy inspect/;
-use Data::Dumper;
 
 
 my $ioe = SocketIO::Emitter->new();
@@ -139,6 +137,30 @@ my $ioe = SocketIO::Emitter->new();
               'flags' => {
                   'json' => 1,
               }
+            }
+        ]
+    );
+    $ioe->clear;
+}
+
+# binary
+{
+    my $bin = pack("CCC", 65, 66, 67);
+    print Dumper $bin;
+    is_deeply(
+        $ioe->pack('event binary', $bin),
+        [
+            {
+                'data' => [
+                    'event binary',
+                    'あいうえお'
+                ],
+                'type' => 2,
+                'nsp' => '/'
+            },
+            {
+              'rooms' => [],
+              'flags' => {}
             }
         ]
     );
