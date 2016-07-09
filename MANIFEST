@@ -1,0 +1,8 @@
+Changes
+lib/SocketIO/Emitter.pm
+Makefile.PL
+MANIFEST
+README
+README.md
+t/00.compile.t
+t/01.base.t
