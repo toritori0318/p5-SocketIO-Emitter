@@ -1,0 +1,19 @@
+SocketIO-Emitter version 0.0.1
+
+  A Perl implementation of socket.io-emitter.
+
+INSTALLATION
+
+To install this module, run the following commands:
+
+    perl Makefile.PL
+    make
+    make test
+    make install
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2016, Tsuyoshi Torii
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
