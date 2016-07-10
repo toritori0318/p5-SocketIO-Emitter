@@ -9,12 +9,14 @@ use Data::MessagePack;
 use Moo;
 use namespace::clean;
 
-has redis => ( is => 'rw');
-has key   => ( is => 'rw');
-has rooms => ( is => 'rw', default => sub {[]} );
-has flags => ( is => 'rw', default => sub {{}} );
+has redis  => ( is => 'rw');
+has key    => ( is => 'rw');
+has prefix => ( is => 'rw');
+has rooms  => ( is => 'rw', default => sub {[]} );
+has flags  => ( is => 'rw', default => sub {{}} );
 has messagepack => ( is => 'rw', default => sub { Data::MessagePack->new() } );
 
+my $UID = 'emitter';
 my $EVENT = 2;
 my $BINARY_EVENT = 5;
 
@@ -23,9 +25,8 @@ sub BUILD {
      # redis
      my $redis = $self->redis || Redis->new();
      $self->redis($redis);
-     # key
-     my $key = (($self->key) ? $self->key : 'socket.io') . '#emitter';
-     $self->key($key);
+     # prefix
+     $self->prefix($self->key ? $self->key : 'socket.io');
 }
 
 sub json      { $_[0]->flags->{json}      = 1; $_[0]; }
@@ -54,9 +55,20 @@ sub of {
 sub emit {
     my ($self, @args) = @_;
 
+    $self->flags->{nsp} = '/' unless exists $self->{flags}->{nsp};
+    my $chn = $self->prefix . '#' . $self->flags->{nsp} . '#';
+
     my $pack_data = $self->pack(@args);
     my $packed = $self->messagepack->pack($pack_data);
-    $self->redis->publish($self->key, $packed);
+
+    if (scalar @{ $self->rooms }) {
+        for my $room (@{ $self->rooms }) {
+            my $chn_room = $chn . $room . '#';
+            $self->redis->publish($chn_room, $packed);
+        }
+    } else {
+        $self->redis->publish($chn, $packed);
+    }
 
     # clear
     $self->clear;
@@ -70,14 +82,9 @@ sub pack {
     my %packet;
     $packet{type} = ($self->include_binary(@args)) ? $BINARY_EVENT : $EVENT;
     $packet{data} = \@args;
-    $packet{nsp}  = '/';
+    $packet{nsp}  = delete $self->flags->{'nsp'};
 
-    if(grep {$_ eq 'nsp'} keys $self->flags) {
-      $packet{'nsp'} = $self->flags->{'nsp'};
-      delete $self->flags->{'nsp'};
-    }
-
-    return [\%packet, { rooms => $self->rooms, flags => $self->flags }];
+    return [$UID, \%packet, { rooms => $self->rooms, flags => $self->flags }];
 }
 
 sub clear {
