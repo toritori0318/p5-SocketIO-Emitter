@@ -12,13 +12,14 @@ SKIP: {
         is_deeply(
             $ioe->pack('event', 'event message'),
             [
+                'emitter',
                 {
                     'data' => [
                         'event',
                         'event message'
                     ],
                     'type' => 2,
-                    'nsp' => '/'
+                    'nsp' => undef
                 },
                 {
                   'rooms' => [],
@@ -34,6 +35,7 @@ SKIP: {
         is_deeply(
             $ioe->of('/nsp')->pack('event nsp', 'event nsp message'),
             [
+                'emitter',
                 {
                     'data' => [
                         'event nsp',
@@ -56,6 +58,7 @@ SKIP: {
         is_deeply(
             $ioe->of('/nsp')->to('some room')->pack('event nsp room', 'event nsp room message'),
             [
+                'emitter',
                 {
                     'data' => [
                         'event nsp room',
@@ -78,13 +81,14 @@ SKIP: {
         is_deeply(
             $ioe->broadcast->pack('event broadcast', 'event broadcast message'),
             [
+                'emitter',
                 {
                     'data' => [
                         'event broadcast',
                         'event broadcast message'
                     ],
                     'type' => 2,
-                    'nsp' => '/'
+                    'nsp' => undef
                 },
                 {
                   'rooms' => [],
@@ -102,13 +106,14 @@ SKIP: {
         is_deeply(
             $ioe->volatile->pack('event volatile', 'event volatile message'),
             [
+                'emitter',
                 {
                     'data' => [
                         'event volatile',
                         'event volatile message'
                     ],
                     'type' => 2,
-                    'nsp' => '/'
+                    'nsp' => undef
                 },
                 {
                   'rooms' => [],
@@ -126,13 +131,14 @@ SKIP: {
         is_deeply(
             $ioe->json->pack('event json', 'event json message'),
             [
+                'emitter',
                 {
                     'data' => [
                         'event json',
                         'event json message'
                     ],
                     'type' => 2,
-                    'nsp' => '/'
+                    'nsp' => undef
                 },
                 {
                   'rooms' => [],
@@ -148,17 +154,17 @@ SKIP: {
     # binary
     {
         my $bin = pack("CCC", 65, 66, 67);
-        warn Dumper($bin);
         is_deeply(
             $ioe->pack('event binary', $bin),
             [
+                'emitter',
                 {
                     'data' => [
                         'event binary',
                         'ABC'
                     ],
                     'type' => 2,
-                    'nsp' => '/'
+                    'nsp' => undef
                 },
                 {
                   'rooms' => [],
