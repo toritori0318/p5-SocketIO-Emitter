@@ -1,4 +1,8 @@
 Revision history for Perl extension p5-SocketIO-Emitter.
 
-0.01  Tue Jul 10 02:06:34 2016
+0.02  Jul 11 2016
+    - support for version 0.3.0 or higher(@papix)
+    - upgrade Data::MessagePack 0.50
+
+0.01  Jul 10 2016
     First version.
