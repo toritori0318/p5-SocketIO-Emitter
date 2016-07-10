@@ -59,7 +59,7 @@ sub emit {
     my $chn = $self->prefix . '#' . $self->flags->{nsp} . '#';
 
     my $pack_data = $self->pack(@args);
-    my $packed = $self->messagepack->pack($pack_data);
+    my $packed = $self->messagepack->utf8->pack($pack_data);
 
     if (scalar @{ $self->rooms }) {
         for my $room (@{ $self->rooms }) {

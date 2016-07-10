@@ -7,7 +7,7 @@ WriteMakefile(
     PREREQ_PM     => {
         'Moo'               => '1.002000',
         'Redis'             => '1.972',
-        'Data::MessagePack' => '0.46'
+        'Data::MessagePack' => '0.50'
     },
     MIN_PERL_VERSION => '5.10.0',
     LICENSE => 'perl',
