@@ -6,6 +6,7 @@ WriteMakefile(
     VERSION_FROM  => 'lib/SocketIO/Emitter.pm',
     PREREQ_PM     => {
         'Moo'               => '1.002000',
+        'namespace::clean'  => '0.20',
         'Redis'             => '1.972',
         'Data::MessagePack' => '0.49'
     },
