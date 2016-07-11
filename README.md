@@ -42,6 +42,13 @@ This project uses redis. Make sure your environment has redis.
     make test
     make install
 
+## DEPENDENCIES
+
+    Moo
+    namespace::clean
+    Redis
+    Data::MessagePack(<=0.49)
+
 # LICENSE
 
 Copyright (C) toritori0318.

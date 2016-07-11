@@ -11,6 +11,13 @@ To install this module, run the following commands:
     make test
     make install
 
+DEPENDENCIES
+
+    Moo
+    namespace::clean
+    Redis
+    Data::MessagePack(<=0.49)
+
 COPYRIGHT AND LICENCE
 
 Copyright (C) 2016, Tsuyoshi Torii
