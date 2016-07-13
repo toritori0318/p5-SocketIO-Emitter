@@ -35,7 +35,7 @@ sub broadcast { $_[0]->flags->{broadcast} = 1; $_[0]; }
 
 sub in {
     my ($self, $room) = @_;
-    push $self->rooms, $room
+    push @{$self->rooms}, $room
         unless grep { $_ eq $room } @{$self->rooms};
     $self;
 }
